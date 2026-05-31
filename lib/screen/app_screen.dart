@@ -14,7 +14,7 @@ class AppScreen extends StatefulWidget {
 class _AppScreenState extends State<AppScreen> {
   bool isCut = true;
 
-  final AppController controller = AppController();
+  final controller = AppController.controller;
 
   @override
   Widget build(BuildContext context) {

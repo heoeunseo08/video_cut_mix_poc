@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:video_poc/controller/app_controller.dart';
 
 class CutScreen extends StatefulWidget {
   const CutScreen({super.key});
@@ -8,6 +9,9 @@ class CutScreen extends StatefulWidget {
 }
 
 class _CutScreenState extends State<CutScreen> {
+
+  final controller = AppController.controller;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

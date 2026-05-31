@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:video_poc/controller/app_controller.dart';
 
 class MixScreen extends StatefulWidget {
   const MixScreen({super.key});
@@ -8,6 +9,9 @@ class MixScreen extends StatefulWidget {
 }
 
 class _MixScreenState extends State<MixScreen> {
+
+  final controller = AppController.controller;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
