@@ -12,10 +12,6 @@ class MixScreen extends StatefulWidget {
 class _MixScreenState extends State<MixScreen> {
   final controller = AppController.instance;
 
-  void totalDuration(){
-
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +52,7 @@ class _MixScreenState extends State<MixScreen> {
                       ),
                     ),
                     Padding(
-                      padding: .only(right: 50),
+                      padding: EdgeInsets.only(right: 50),
                       child: GestureDetector(
                         onTap: () {
                           final path =
@@ -67,6 +63,9 @@ class _MixScreenState extends State<MixScreen> {
                                 index,
                               );
                               controller.videoController.duration.remove(
+                                path,
+                              );
+                              controller.videoController.durationMS.remove(
                                 path,
                               );
                             });
@@ -86,13 +85,20 @@ class _MixScreenState extends State<MixScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("${controller.videoController.videos.length}개"),
+                  Text("총: ${controller.videoController.totalDuration()}"),
                 ],
               ),
               ElevatedButton(
                 onPressed: () async {
+                  final inputPath = controller.videoController.videos
+                      .map((e) => e.path)
+                      .toList();
+
+                  final result = await controller.mixVideo(inputPath);
+
                   Navigator.pop(context);
 
-                  showMessage(context, "Cut 완료!");
+                  showMessage(context, result != null ? "Mix 완료!" : "Mix 실패");
                 },
                 child: Text("Mix 실행"),
               ),

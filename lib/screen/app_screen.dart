@@ -81,6 +81,9 @@ class _AppScreenState extends State<AppScreen> {
                                     controller.videoController.duration.remove(
                                       path,
                                     );
+                                    controller.videoController.durationMS.remove(
+                                      path,
+                                    );
                                   }),
                                   icon: Icon(Icons.close, size: 25),
                                   padding: .only(right: 45),
