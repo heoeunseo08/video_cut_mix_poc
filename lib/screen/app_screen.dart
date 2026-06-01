@@ -14,7 +14,7 @@ class AppScreen extends StatefulWidget {
 class _AppScreenState extends State<AppScreen> {
   bool isCut = true;
 
-  final controller = AppController.controller;
+  final controller = AppController.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +37,9 @@ class _AppScreenState extends State<AppScreen> {
             width: MediaQuery.of(context).size.width,
             child: ToggleButtons(
               isSelected: [isCut, !isCut],
-              children: [Text("Cut"), Text("Mix")],
               onPressed: (index) => setState(() => isCut = index == 0),
+              constraints: BoxConstraints(minHeight: 50, minWidth: 70),
+              children: [Text("Cut"), Text("Mix")],
             ),
           ),
           controller.videoController.videos.isEmpty
@@ -50,20 +51,41 @@ class _AppScreenState extends State<AppScreen> {
                     itemBuilder: (context, index) {
                       final video = controller.videoController.videos[index];
 
-                      return ListTile(
-                        leading: Icon(Icons.video_file),
-                        title: Text(
-                          video.name,
-                        ),
-                        subtitle: FutureBuilder(
-                          future: controller.videoController.getVideoTime(
-                            video,
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: ListTile(
+                              leading: Icon(Icons.video_file),
+                              title: Text(
+                                video.name,
+                              ),
+                              subtitle: Text(
+                                controller.videoController.duration[video
+                                        .path] ??
+                                    "...",
+                              ),
+                            ),
                           ),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData) return Text("...");
-                            return Text(snapshot.data!);
-                          },
-                        ),
+                          isCut
+                              ? Container()
+                              : IconButton(
+                                  onPressed: () => setState(() {
+                                    final path = controller
+                                        .videoController
+                                        .videos[index]
+                                        .path;
+                                    controller.videoController.videos.removeAt(
+                                      index,
+                                    );
+                                    controller.videoController.duration.remove(
+                                      path,
+                                    );
+                                  }),
+                                  icon: Icon(Icons.close, size: 25),
+                                  padding: .only(right: 45),
+                                ),
+                        ],
                       );
                     },
                   ),
@@ -72,7 +94,7 @@ class _AppScreenState extends State<AppScreen> {
             padding: const EdgeInsets.only(bottom: 50),
             child: ElevatedButton(
               onPressed: () {
-                if(controller.videoController.videos.isEmpty){
+                if (controller.videoController.videos.isEmpty) {
                   showMessage(context, "비디오를 먼저 선택하세요");
                   return;
                 }

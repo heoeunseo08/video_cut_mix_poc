@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:video_poc/screen/app_screen.dart';
 
 void main() {
+  FlutterError.onError = (details){
+    debugPrint('Flutter error: ${details.exceptionAsString()}');
+    debugPrint('Stack: ${details.stack}');
+  };
+
   runApp(const MyApp());
 }
 

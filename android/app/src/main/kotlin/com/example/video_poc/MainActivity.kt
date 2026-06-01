@@ -38,7 +38,10 @@ class MainActivity : FlutterActivity() {
                     executor.execute {
                         try {
                             VideoEdit.cut(inputPath, outPath, startMs, endMs)
-                            mainHandler.post { result.success(outPath) }
+
+                            val galleryUri = VideoEdit.saveToGallery(context, outPath)
+
+                            mainHandler.post { result.success(galleryUri) }
                         } catch (e: Exception){
                             mainHandler.post { result.error("CUT_ERROR",e.message, null) }
                         }
