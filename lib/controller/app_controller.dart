@@ -32,9 +32,9 @@ class AppController {
     });
   }
 
-  Future<String?> mixVideo(List<String> inputPath) async {
+  Future<String?> mixVideo(List<String> inputPaths) async {
     return await videoChannel.invokeMethod('mix_video', {
-      'inputPath': inputPath
+      'inputPaths': inputPaths
     });
   }
 }

@@ -1,5 +1,6 @@
 package com.example.video_poc
 
+import android.media.MediaMetadataRetriever
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -42,11 +43,47 @@ class MainActivity : FlutterActivity() {
                             val galleryUri = VideoEdit.saveToGallery(context, outPath)
 
                             mainHandler.post { result.success(galleryUri) }
-                        } catch (e: Exception){
-                            mainHandler.post { result.error("CUT_ERROR",e.message, null) }
+                        } catch (e: Exception) {
+                            mainHandler.post { result.error("CUT_ERROR", e.message, null) }
                         }
                     }
                 }
+
+                "mix_video" -> {
+                    val inputPath = call.argument<List<String>>("inputPaths")!!
+                    val outPath =
+                        "${context.cacheDir.absolutePath}/mix_${System.currentTimeMillis()}.mp4"
+
+                    executor.execute {
+                        try {
+                            VideoEdit.mix(inputPath, outPath)
+                            val galleryUri = VideoEdit.saveToGallery(context, outPath)
+                            mainHandler.post { result.success(galleryUri) }
+                        } catch (e: Exception) {
+                            mainHandler.post { result.error("MIX_ERROR", e.message, null) }
+                        }
+                    }
+                }
+
+                "get_duration" -> {
+                    val path = call.argument<String>("path")!!
+                    executor.execute {
+                        try {
+                            val retriever = MediaMetadataRetriever()
+                            retriever.setDataSource(path)
+                            val durationMs = retriever.extractMetadata(
+                                MediaMetadataRetriever.METADATA_KEY_DURATION
+                            )?.toInt() ?: 0
+                            retriever.release()
+
+                            mainHandler.post { result.success(durationMs) }
+                        } catch (e: Exception) {
+                            mainHandler.post { result.error("DURATION ERROR", e.message, null) }
+                        }
+                    }
+                }
+
+
                 else -> result.notImplemented()
             }
         }

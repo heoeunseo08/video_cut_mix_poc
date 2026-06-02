@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:video_poc/controller/app_controller.dart';
 import 'package:video_poc/screen/cut_screen.dart';
@@ -22,8 +24,9 @@ class _AppScreenState extends State<AppScreen> {
       appBar: AppBar(title: Text("Video Cut/Mix")),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await controller.videoController.pickVideo();
+          await controller.pickVideo();
           setState(() {});
+          log("${controller.videoController.videos.length}");
         },
         child: Icon(Icons.add),
       ),

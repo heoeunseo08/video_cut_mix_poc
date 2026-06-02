@@ -81,26 +81,33 @@ class _MixScreenState extends State<MixScreen> {
           ),
           Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("${controller.videoController.videos.length}개"),
-                  Text("총: ${controller.videoController.totalDuration()}"),
-                ],
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("${controller.videoController.videos.length}개"),
+                    Text("총: ${controller.videoController.totalDuration()}"),
+                  ],
+                ),
               ),
-              ElevatedButton(
-                onPressed: () async {
-                  final inputPath = controller.videoController.videos
-                      .map((e) => e.path)
-                      .toList();
+              SizedBox(height: 30),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 40),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final inputPath = controller.videoController.videos
+                        .map((e) => e.path)
+                        .toList();
 
-                  final result = await controller.mixVideo(inputPath);
+                    final result = await controller.mixVideo(inputPath);
 
-                  Navigator.pop(context);
+                    Navigator.pop(context);
 
-                  showMessage(context, result != null ? "Mix 완료!" : "Mix 실패");
-                },
-                child: Text("Mix 실행"),
+                    showMessage(context, result != null ? "Mix 완료!" : "Mix 실패");
+                  },
+                  child: Text("Mix 실행"),
+                ),
               ),
             ],
           ),
