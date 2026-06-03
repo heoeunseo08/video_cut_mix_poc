@@ -69,6 +69,7 @@ class _CutScreenState extends State<CutScreen> {
         title: Text("Cut 편집"),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           if (isInit)
             Padding(
@@ -99,7 +100,7 @@ class _CutScreenState extends State<CutScreen> {
             ),
           ),
           Padding(
-            padding: .symmetric(horizontal: 12),
+            padding: EdgeInsets.symmetric(horizontal: 12),
             child: RangeSlider(
               min: 0,
               max: totalMs,
@@ -122,20 +123,23 @@ class _CutScreenState extends State<CutScreen> {
 
           Text("선택: ${formatMs(endMs - startMs)}"),
           SizedBox(height: 30),
-          ElevatedButton(
-            onPressed: () async {
-              controller.startMs = startMs.toInt();
-              controller.endMs = endMs.toInt();
+          Padding(
+            padding: const EdgeInsets.only(bottom: 40),
+            child: ElevatedButton(
+              onPressed: () async {
+                controller.startMs = startMs.toInt();
+                controller.endMs = endMs.toInt();
 
-              final result = await controller.cutVideo(
-                controller.videoController.videos.first.path,
-              );
+                final result = await controller.cutVideo(
+                  controller.videoController.videos.first.path,
+                );
 
-              Navigator.pop(context);
+                Navigator.pop(context);
 
-              showMessage(context, result != null ? "Cut 완료!" : "Cut 실패");
-            },
-            child: Text("Cut 실행"),
+                showMessage(context, result != null ? "Cut 완료!" : "Cut 실패");
+              },
+              child: Text("Cut 실행"),
+            ),
           ),
         ],
       ),

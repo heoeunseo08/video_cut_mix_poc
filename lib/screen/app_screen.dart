@@ -36,7 +36,7 @@ class _AppScreenState extends State<AppScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            alignment: .center,
+            alignment: Alignment.center,
             width: MediaQuery.of(context).size.width,
             child: ToggleButtons(
               isSelected: [isCut, !isCut],

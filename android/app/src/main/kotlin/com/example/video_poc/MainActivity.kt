@@ -1,6 +1,5 @@
 package com.example.video_poc
 
-import android.media.MediaMetadataRetriever
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -69,14 +68,7 @@ class MainActivity : FlutterActivity() {
                     val path = call.argument<String>("path")!!
                     executor.execute {
                         try {
-                            val retriever = MediaMetadataRetriever()
-                            retriever.setDataSource(path)
-                            val durationMs = retriever.extractMetadata(
-                                MediaMetadataRetriever.METADATA_KEY_DURATION
-                            )?.toInt() ?: 0
-                            retriever.release()
-
-                            mainHandler.post { result.success(durationMs) }
+                            mainHandler.post { result.success(Utils.getDuration(path)) }
                         } catch (e: Exception) {
                             mainHandler.post { result.error("DURATION ERROR", e.message, null) }
                         }
